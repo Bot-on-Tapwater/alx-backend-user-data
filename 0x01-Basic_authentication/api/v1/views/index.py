@@ -35,3 +35,16 @@ def unauthorized() -> str:
       str: The string representation of the response.
     """
     abort(401)
+
+
+@app_views.route('/forbidden', strict_slashes=False)
+def forbidden() -> str:
+    """
+    A function that handles the '/forbidden' route.
+
+    This function returns a string and does not take any parameters.
+
+    Returns:
+        str: The string representation of an HTTP 403 error.
+    """
+    abort(403)
