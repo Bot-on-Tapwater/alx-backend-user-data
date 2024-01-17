@@ -6,24 +6,17 @@ from typing import List, TypeVar
 
 class Auth():
     """Implement class Auth"""
-    def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """
-        Check if authentication is required for a given path.
+    def require_auth(self, path: str,
+                     excluded_paths: List[str]) -> bool:
+        """require auth method"""
+        if path is not None and path[-1] != "/":
+            path += "/"
 
-        Args:
-            path (str): The path to check for authentication.
-            excluded_paths (List[str]): A list of
-            paths that are excluded from authentication.
-
-        Returns:
-            bool: True if authentication is required, False otherwise.
-        """
-        if path is None or excluded_paths is None or excluded_paths == []:
+        if excluded_paths is None or len(excluded_paths) == 0:
             return True
-        if (path in excluded_paths or
-                f"{path}/" in excluded_paths or path[:-1] in excluded_paths):
-            return False
-        return True
+        if (path not in excluded_paths or path is None):
+            return True
+        return False
 
     def authorization_header(self, request=None) -> str:
         """
