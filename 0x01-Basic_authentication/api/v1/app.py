@@ -21,6 +21,27 @@ if os.getenv('AUTH_TYPE') == 'auth':
 
 @app.before_request
 def filter_request():
+    """
+    Decorator function to filter requests before they are processed.
+
+    This function is used as a decorator for the
+    `before_request` method of the `app` object.
+    It filters incoming requests based on the
+    authentication status and the path of the request.
+
+    Parameters:
+        None
+
+    Returns:
+        None
+
+    Raises:
+        401: If the request requires
+        authentication and the authorization header is missing.
+        403: If the request requires
+        authentication and the current user is not authorized.
+    """
+
     if auth is not None:
         paths = ['/api/v1/status/',
                  '/api/v1/unauthorized/', '/api/v1/forbidden/']
