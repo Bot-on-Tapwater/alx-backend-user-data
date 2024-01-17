@@ -113,6 +113,17 @@ class BasicAuth(Auth):
             return None
 
     def current_user(self, request=None) -> TypeVar('User'):
+        """
+        Retrieves the current user based on the provided request.
+
+        Parameters:
+            request (Optional[Request]): The request object that contains the
+            authorization header. Defaults to None.
+
+        Returns:
+            User: An instance of the User class representing the current user.
+
+        """
         auth_header = self.authorization_header(request)
 
         auth_header = self.extract_base64_authorization_header(auth_header)
