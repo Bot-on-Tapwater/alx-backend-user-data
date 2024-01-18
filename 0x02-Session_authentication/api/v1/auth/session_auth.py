@@ -4,6 +4,7 @@
 from api.v1.auth.auth import Auth
 from models.user import User
 import uuid
+import os
 
 
 class SessionAuth(Auth):
@@ -54,8 +55,36 @@ class SessionAuth(Auth):
             return self.user_id_by_session_id.get(session_id)
 
     def current_user(self, request=None):
+        """
+        Retrieve the current user based on the provided request.
+
+        Parameters:
+            request (optional): The HTTP request object (default: None).
+
+        Returns:
+            The current User object associated with the provided request.
+        """
         session_cookie = self.session_cookie(request)
 
         user_id_for_session = self.user_id_for_session_id(session_cookie)
 
         return User.get(user_id_for_session)
+
+    def destroy_session(self, request=None):
+        """
+        Destroy the session.
+
+        :param request: The request object. (default: None)
+        :type request: object
+        :return: True if the session was
+        successfully destroyed, False otherwise.
+        :rtype: bool
+        """
+        if request is None:
+            return False
+        elif not self.session_cookie(request):
+            return False
+        else:
+            session_id = request.cookies.get(os.getenv("SESSION_NAME"))
+            del self.user_id_by_session_id[session_id]
+            return True

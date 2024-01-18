@@ -54,3 +54,21 @@ def session_authentication():
             response.set_cookie(session_name, session_id)
             return response
     return jsonify({"error": "wrong password"}), 401
+
+
+@app_views.route('/auth_session/logout',
+                 methods=['DELETE'], strict_slashes=False)
+def logout():
+    """
+    Logout a user session.
+
+    Returns:
+        A JSON response with an empty dictionary
+        and a status code of 200 if the session is successfully destroyed.
+        Otherwise, it aborts the request with a status code of 404.
+    """
+    from api.v1.app import auth
+    if auth.destroy_session(request):
+        return jsonify({}), 200
+    else:
+        abort(404)
