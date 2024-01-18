@@ -43,7 +43,7 @@ def session_authentication():
 
     all_users = User.search({"email": email})
     if all_users == [] or not all_users:
-        return jsonify({"error": "no user found for this email"}), 400
+        return jsonify({"error": "no user found for this email"}), 404
     for user in all_users:
         if user.is_valid_password(password):
             from api.v1.app import auth
