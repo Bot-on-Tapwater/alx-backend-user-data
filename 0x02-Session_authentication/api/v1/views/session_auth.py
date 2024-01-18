@@ -1,56 +1,30 @@
 #!/usr/bin/env python3
-""" Module of session_auth views
-"""
-from flask import jsonify, abort, request
+"""View for Session Authentication"""
 from api.v1.views import app_views
+from flask import request, jsonify
 from models.user import User
 import os
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
-def session_authentication():
-    """
-    Authenticates a user session by checking the provided email and password.
-
-    Returns:
-        - If the email is missing or empty: a
-        JSON response with an error message and a status code of 400.
-        - If the password is missing or empty: a
-        JSON response with an error message and a status code of 400.
-        - If no user is found with the provided
-        email: a JSON response with an error message and a status code of 400.
-        - If the password is incorrect: a JSON
-        response with an error message and a status code of 401.
-        - If the email and password are correct:a
-        JSON response with the user information
-        and a session ID, and a status code of 200.
-    """
-    try:
-        email = request.form.get("email")
-
-        if email == '' or email is None:
-            return jsonify({"error": "email missing"}), 400
-    except Exception:
+def login():
+    """handles all routes for the Session authentication"""
+    email = request.form.get('email')
+    password = request.form.get('password')
+    if not email:
         return jsonify({"error": "email missing"}), 400
-
-    try:
-        password = request.form.get("password")
-
-        if password == '' or password is None:
-            return jsonify({"error": "password missing"}), 400
-    except Exception:
+    if not password:
         return jsonify({"error": "password missing"}), 400
-
-    all_users = User.search({"email": email})
-    if all_users == [] or not all_users:
-        return jsonify({"error": "no user found for this email"}), 400
-    for user in all_users:
+    users = User.search({'email': email})
+    if not users:
+        return jsonify({"error": "no user found for this email"}), 404
+    for user in users:
         if user.is_valid_password(password):
             from api.v1.app import auth
             session_id = auth.create_session(user.id)
+            cookie_name = os.environ.get("SESSION_NAME")
             response = jsonify(user.to_json())
-
-            session_name = os.getenv('SESSION_NAME')
-            response.set_cookie(session_name, session_id)
+            response.set_coookie(cookie_name, session_id)
             return response
+
     return jsonify({"error": "wrong password"}), 401
