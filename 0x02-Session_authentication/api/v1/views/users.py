@@ -128,4 +128,15 @@ def update_user(user_id: str = None) -> str:
 
 @app_views.route('/users/me', methods=['GET'], strict_slashes=False)
 def get_authenticated_user() -> str:
+    """
+    Get the authenticated user.
+
+    This function returns the authenticated user's information in JSON format.
+
+    Parameters:
+        None
+
+    Returns:
+        str: A JSON string containing the authenticated user's information.
+    """
     return jsonify(request.current_user.to_json())
