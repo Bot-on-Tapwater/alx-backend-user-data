@@ -3,6 +3,8 @@
 from flask import request
 from typing import List, TypeVar
 from fnmatch import fnmatch
+import os
+# import requests
 
 
 class Auth():
@@ -64,3 +66,23 @@ class Auth():
 
         """
         return None
+
+    def session_cookie(self, request=None):
+        """
+        Returns the session cookie from the given request.
+
+        Args:
+            request (HttpRequest, optional):
+            The HTTP request object. Defaults to None.
+
+        Returns:
+            str: The session cookie value if it exists, None otherwise.
+        """
+        if request is None:
+            return None
+        else:
+            try:
+                return request.cookies.get(os.getenv("SESSION_NAME"))
+
+            except Exception:
+                return None
