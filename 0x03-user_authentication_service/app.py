@@ -111,6 +111,12 @@ def profile():
 
 @app.route('/reset_password', methods=['POST'])
 def get_reset_password_token():
+    """
+    Function to handle the POST request for resetting a password.
+    Takes no parameters.
+    Returns a JSON response with the email and reset token if successful,
+    otherwise aborts with a 403 error.
+    """
     email = request.form['email']
 
     try:
