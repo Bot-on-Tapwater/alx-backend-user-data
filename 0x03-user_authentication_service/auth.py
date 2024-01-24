@@ -69,11 +69,13 @@ class Auth:
         except NoResultFound:
             return False
 
-    def _generate_uuid() -> str:
+    def _generate_uuid(self) -> str:
         """
         Generate a UUID and return it as a string.
 
         :return: A string representing the UUID.
         :rtype: str
         """
-        return str(uuid.uuid4())
+        new_uuid = str(uuid.uuid4())
+        print(f"UUID: {new_uuid} TYPE: {type(new_uuid)}")
+        return new_uuid
