@@ -122,6 +122,21 @@ def get_reset_password_token():
 
 @app.route('/reset_password', methods=['PUT'])
 def update_password():
+    """
+    Update the user's password using the reset token and new password.
+
+    Parameters:
+    - email: the user's email address
+    - reset_token: the token used to reset the password
+    - new_password: the new password to be set
+
+    Returns:
+    - A JSON response containing the user's email and a success message if the
+      password is updated successfully, with status code 200.
+    - If a ValueError is raised during the password
+    update, a 403 error response
+      is returned.
+    """
     email = request.form['email']
     reset_token = request.form['reset_token']
     new_password = request.form['new_password']
