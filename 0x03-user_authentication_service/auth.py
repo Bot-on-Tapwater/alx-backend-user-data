@@ -77,5 +77,5 @@ class Auth:
         :rtype: str
         """
         new_uuid = str(uuid.uuid4())
-        print(f"UUID: {new_uuid} TYPE: {type(new_uuid)}")
+        # print(f"UUID: {new_uuid} TYPE: {type(new_uuid)}")
         return new_uuid
