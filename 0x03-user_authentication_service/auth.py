@@ -127,12 +127,10 @@ class Auth:
         Returns:
             None: If the user does not exist in the database.
         """
-        try:
-            user = self._db.find_user_by(id=user_id)
+        user = self._db.find_user_by(id=user_id)
 
-            user.session_id = None
+        user.session_id = None
 
-            self._db._session.commit()
+        self._db._session.commit()
 
-        except NoResultFound:
-            return None
+        return None
