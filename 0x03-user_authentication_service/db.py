@@ -52,30 +52,29 @@ class DB:
         self._session.commit()
         return new_user
 
+    def find_user_by(self, **kwargs) -> User:
+        """
+        Find a user by the provided keyword arguments.
 
-def find_user_by(self, **kwargs) -> User:
-    """
-    Find a user by the provided keyword arguments.
+        Args:
+            **kwargs (dict): Arbitrary keyword arguments.
 
-    Args:
-        **kwargs (dict): Arbitrary keyword arguments.
+        Returns:
+            User: The first user found based on the provided keyword arguments.
 
-    Returns:
-        User: The first user found based on the provided keyword arguments.
-
-    Raises:
-        NoResultFound: If no user is found.
-        InvalidRequestError: If the request is invalid.
-    """
-    if not kwargs:
-        raise InvalidRequestError()
-    for keyword, value in kwargs.items():
-        if hasattr(User, keyword):
-            first_user = self._session.query(User).filter_by(
-                **{keyword: value}).first()
-            if first_user is not None:
-                return first_user
-            else:
-                raise NoResultFound()
-        else:
+        Raises:
+            NoResultFound: If no user is found.
+            InvalidRequestError: If the request is invalid.
+        """
+        if not kwargs:
             raise InvalidRequestError()
+        for keyword, value in kwargs.items():
+            if hasattr(User, keyword):
+                first_user = self._session.query(User).filter_by(
+                    **{keyword: value}).first()
+                if first_user is not None:
+                    return first_user
+                else:
+                    raise NoResultFound()
+            else:
+                raise InvalidRequestError()
