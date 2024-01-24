@@ -80,6 +80,17 @@ class DB:
                 raise InvalidRequestError()
 
     def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        Updates a user with the specified user
+        ID using the provided keyword arguments.
+
+        Args:
+            user_id (int): The ID of the user to update.
+            **kwargs: Arbitrary keyword arguments to update the user with.
+
+        Returns:
+            None
+        """
         user = self.find_user_by(id=user_id)
 
         for keyword, value in kwargs.items():
