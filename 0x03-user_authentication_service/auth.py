@@ -23,6 +23,18 @@ def _hash_password(password: str) -> bytes:
     return hashed_password
 
 
+def _generate_uuid(self) -> str:
+    """
+    Generate a UUID and return it as a string.
+
+    :return: A string representing the UUID.
+    :rtype: str
+    """
+    new_uuid = str(uuid.uuid4())
+    # print(f"UUID: {new_uuid} TYPE: {type(new_uuid)}")
+    return new_uuid
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
@@ -68,14 +80,3 @@ class Auth:
                 return False
         except NoResultFound:
             return False
-
-    def _generate_uuid(self) -> str:
-        """
-        Generate a UUID and return it as a string.
-
-        :return: A string representing the UUID.
-        :rtype: str
-        """
-        new_uuid = str(uuid.uuid4())
-        # print(f"UUID: {new_uuid} TYPE: {type(new_uuid)}")
-        return new_uuid
