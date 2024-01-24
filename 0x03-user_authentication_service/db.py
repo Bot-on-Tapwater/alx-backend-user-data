@@ -12,6 +12,7 @@ import logging
 
 logging.disable(logging.WARNING)
 
+
 class DB:
     """DB class
     """
@@ -33,7 +34,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email, hashed_password):
+    def add_user(self, email: str, hashed_password: str) -> User:
         """
         Creates and adds a new user to the database.
 
