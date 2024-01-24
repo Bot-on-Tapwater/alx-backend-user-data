@@ -52,33 +52,30 @@ class DB:
         self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs):
-        """
-        Find a user by the provided keyword arguments.
 
-        Args:
-            **kwargs: Arbitrary keyword arguments.
+def find_user_by(self, **kwargs) -> User:
+    """
+    Find a user by the provided keyword arguments.
 
-        Returns:
-            User: The first user found based on the provided keyword arguments.
+    Args:
+        **kwargs (dict): Arbitrary keyword arguments.
 
-        Raises:
-            NoResultFound: If no user is found.
-            InvalidRequestError: If the request is invalid.
-        """
-        for keyword, value in kwargs.items():
-            # print(f"KEYWORD: {keyword} VALUE: {value}")
-            if hasattr(User, keyword):
-                # print(f"REQUEST IS VALID")
-                first_user = self._session.query(User).filter_by(
-                    **{keyword: value}).first()
-                # print(f"FIRST USER: {first_user}")
-                if first_user is not None:
-                    # print(f"FIRST USER IS NOT NONE")
-                    return first_user
-                else:
-                    # print(f"FIRST USER IS NONE")
-                    raise NoResultFound()
+    Returns:
+        User: The first user found based on the provided keyword arguments.
+
+    Raises:
+        NoResultFound: If no user is found.
+        InvalidRequestError: If the request is invalid.
+    """
+    if not kwargs:
+        raise InvalidRequestError()
+    for keyword, value in kwargs.items():
+        if hasattr(User, keyword):
+            first_user = self._session.query(User).filter_by(
+                **{keyword: value}).first()
+            if first_user is not None:
+                return first_user
             else:
-                # print("REQUEST IS INVALID")
-                raise InvalidRequestError()
+                raise NoResultFound()
+        else:
+            raise InvalidRequestError()
