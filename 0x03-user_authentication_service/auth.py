@@ -108,6 +108,15 @@ class Auth:
             return None
 
     def get_user_from_session_id(self, session_id: str) -> Union[User, str]:
+        """
+        Get the user from the session ID.
+
+        Args:
+            session_id (str): The session ID to look up the user.
+
+        Returns:
+            Union[User, str]: The user object if found, or None if not found.
+        """
         if session_id is None:
             return None
         try:
