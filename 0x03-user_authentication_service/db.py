@@ -8,7 +8,9 @@ from sqlalchemy.orm.session import Session
 
 from user import Base
 from user import User
+import logging
 
+logging.disable(logging.WARNING)
 
 class DB:
     """DB class
