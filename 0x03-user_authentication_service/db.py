@@ -9,6 +9,7 @@ from sqlalchemy.orm.session import Session
 from user import Base
 from user import User
 
+
 class DB:
     """DB class
     """
@@ -29,8 +30,18 @@ class DB:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
         return self.__session
-    
+
     def add_user(self, email, hashed_password):
+        """
+        Creates and adds a new user to the database.
+
+        Args:
+            email (str): The email of the new user.
+            hashed_password (str): The hashed password of the new user.
+
+        Returns:
+            User: The newly created user object.
+        """
         new_user = User(email=email, hashed_password=hashed_password)
         self._session.add(new_user)
         self._session.commit()
