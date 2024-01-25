@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Integration tests"""
-
 import requests
 
-BASE_URL = 'http://127.0.0.1:5000'  # Replace with the actual URL of your Flask app
+
+BASE_URL = 'http://127.0.0.1:5000'
+
 
 def register_user(email: str, password: str) -> None:
     """
@@ -16,49 +17,56 @@ def register_user(email: str, password: str) -> None:
     Returns:
         None
     """
-    response = requests.post(f'{BASE_URL}/users', data={'email': email, 'password': password})
+    response = requests.post(f'{BASE_URL}/users',
+                             data={'email': email, 'password': password})
     assert response.status_code == 200
     print("User registered successfully.")
 
+
 def log_in_wrong_password(email: str, password: str) -> None:
     """
-    Logs in with a wrong password and verifies that the response status code is 401.
-    
+    Logs in with a wrong password and
+    verifies that the response status code is 401.
     Args:
         email (str): The email for logging in.
         password (str): The wrong password for logging in.
-        
     Returns:
         None
     """
-    response = requests.post(f'{BASE_URL}/sessions', data={'email': email, 'password': password})
+    response = requests.post(f'{BASE_URL}/sessions',
+                             data={'email': email, 'password': password})
     assert response.status_code == 401
     print("Login with wrong password failed as expected.")
 
+
 def log_in(email: str, password: str) -> str:
     """
-    Logs in with the given email and password and returns the session ID cookie.
-    
+    Logs in with the given email and password
+    and returns the session ID cookie.
     Args:
         email (str): The email of the user.
         password (str): The password of the user.
-        
+
     Returns:
         str: The session ID cookie.
     """
-    response = requests.post(f'{BASE_URL}/sessions', data={'email': email, 'password': password})
+    response = requests.post(f'{BASE_URL}/sessions',
+                             data={'email': email, 'password': password})
     assert response.status_code == 200
     print("Login successful.")
     return response.cookies['session_id']
 
+
 def profile_unlogged() -> None:
     """
-    Function to perform an unlogged user profile access and verify the expected failure.
+    Function to perform an unlogged user profile access
+    and verify the expected failure.
     No parameters are taken, and the function returns None.
     """
     response = requests.get(f'{BASE_URL}/profile')
     assert response.status_code == 403
     print("Profile access without login failed as expected.")
+
 
 def profile_logged(session_id: str) -> None:
     """
@@ -66,17 +74,20 @@ def profile_logged(session_id: str) -> None:
 
     Args:
         session_id (str): The session ID for the user.
-        
+
     Returns:
         None
     """
-    response = requests.get(f'{BASE_URL}/profile', cookies={'session_id': session_id})
+    response = requests.get(f'{BASE_URL}/profile',
+                            cookies={'session_id': session_id})
     assert response.status_code == 200
     print("Profile access after login successful.")
 
+
 def log_out(session_id: str) -> None:
     """
-    Logs out the user by deleting the session identified by the given session_id.
+    Logs out the user by deleting the
+    session identified by the given session_id.
 
     Args:
         session_id (str): The unique identifier of the session to be deleted.
@@ -84,9 +95,11 @@ def log_out(session_id: str) -> None:
     Returns:
         None
     """
-    response = requests.delete(f'{BASE_URL}/sessions', cookies={'session_id': session_id})
+    response = requests.delete(f'{BASE_URL}/sessions',
+                               cookies={'session_id': session_id})
     assert response.status_code == 200  # Redirect status code
     print("Logout successful.")
+
 
 def reset_password_token(email: str) -> str:
     """
@@ -98,25 +111,30 @@ def reset_password_token(email: str) -> str:
     Returns:
         str: The reset password token.
     """
-    response = requests.post(f'{BASE_URL}/reset_password', data={'email': email})
+    response = requests.post(f'{BASE_URL}/reset_password',
+                             data={'email': email})
     assert response.status_code == 200
     reset_token = response.json()['reset_token']
     print("Reset password token obtained.")
     return reset_token
 
+
 def update_password(email: str, reset_token: str, new_password: str) -> None:
     """
-    Update a user's password using the provided email, reset token, and new password.
-    
+    Update a user's password using the provided email,
+    reset token, and new password.
+
     Args:
         email (str): The user's email address.
         reset_token (str): The token used to reset the user's password.
         new_password (str): The new password to be set for the user.
-    
+
     Returns:
         None
     """
-    response = requests.put(f'{BASE_URL}/reset_password', data={'email': email, 'reset_token': reset_token, 'new_password': new_password})
+    response = requests.put(f'{BASE_URL}/reset_password',
+                            data={'email': email, 'reset_token': reset_token,
+                                  'new_password': new_password})
     assert response.status_code == 200
     print("Password updated successfully.")
 
